@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Epub from "epubjs/lib/index";
 import defaultStyles from "./style";
+import { getSelectedWordForDocument } from "./getSelectedWordForDocument";
 
 global.ePub = Epub; // Fix for v3 branch of epub.js -> needs ePub to by a global var
 
@@ -91,6 +92,7 @@ class EpubView extends Component {
     };
     this.rendition.on("locationChanged", this.onLocationChange);
     this.rendition.on("keyup", this.handleKeyPress);
+    this.rendition.on("click", this.handleClick);
     getRendition && getRendition(this.rendition);
   }
 
@@ -111,6 +113,10 @@ class EpubView extends Component {
   handleKeyPress = ({ key }) => {
     key && key === "ArrowRight" && this.nextPage();
     key && key === "ArrowLeft" && this.prevPage();
+  }
+
+  handleClick = ({ target }) => {
+    console.log(getSelectedWordForDocument(target.ownerDocument));
   };
 
   render() {
