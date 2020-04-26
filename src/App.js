@@ -2,23 +2,9 @@ import React, { Component } from "react";
 import { createGlobalStyle } from "styled-components";
 import FileReaderInput from "react-file-reader-input";
 import { ReactReader } from "./modules";
-import {
-  Container,
-  ReaderContainer,
-  Bar,
-  LogoWrapper,
-  Logo,
-  GenericButton,
-  CloseIcon,
-  FontSizeButton,
-  ButtonWrapper
-} from "./Components";
+import { Container, ReaderContainer, FontSizeButton } from "./Components";
 
 const storage = global.localStorage || null;
-
-const DEMO_URL =
-  "https://gerhardsletten.github.io/react-reader/files/alice.epub";
-const DEMO_NAME = "Alice in wonderland";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -51,31 +37,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullscreen: false,
       location:
         storage && storage.getItem("epub-location")
           ? storage.getItem("epub-location")
           : 2,
-      localFile: null,
-      localName: null,
+      localFile: props.localFile,
+      localName: props.localName,
       largeText: false
     };
     this.rendition = null;
   }
-
-  toggleFullscreen = () => {
-    this.setState(
-      {
-        fullscreen: !this.state.fullscreen
-      },
-      () => {
-        setTimeout(() => {
-          const evt = document.createEvent("UIEvents");
-          evt.initUIEvent("resize", true, false, global, 0);
-        }, 1000);
-      }
-    );
-  };
 
   onLocationChanged = location => {
     this.setState(
@@ -83,7 +54,7 @@ class App extends Component {
         location
       },
       () => {
-        storage && storage.setItem("epub-location", location);
+        storage && storage.setItem("epub-location", this.state.location);
       }
     );
   };
@@ -95,7 +66,7 @@ class App extends Component {
         largeText: nextState
       },
       () => {
-        this.rendition.themes.fontSize(nextState ? "140%" : "100%");
+        this.rendition.themes.fontSize(this.state.largeText ? "140%" : "100%");
       }
     );
   };
@@ -106,6 +77,7 @@ class App extends Component {
     this.rendition = rendition;
     rendition.themes.fontSize(largeText ? "140%" : "100%");
   };
+
   handleChangeFile = (event, results) => {
     if (results.length > 0) {
       const [e, file] = results[0];
@@ -119,32 +91,21 @@ class App extends Component {
       });
     }
   };
+
   render() {
-    const { fullscreen, location, localFile, localName } = this.state;
+    const { location, localFile, localName } = this.state;
+
+    if (!localFile) {
+      return <div>No epub selected</div>;
+    }
+
     return (
       <Container>
         <GlobalStyle />
-        <Bar>
-          <LogoWrapper href="https://github.com/gerhardsletten/react-reader">
-            <Logo
-              src="https://gerhardsletten.github.io/react-reader/files/react-reader.svg"
-              alt="React-reader - powered by epubjs"
-            />
-          </LogoWrapper>
-          <ButtonWrapper>
-            <FileReaderInput as="buffer" onChange={this.handleChangeFile}>
-              <GenericButton>Upload local epub</GenericButton>
-            </FileReaderInput>
-            <GenericButton onClick={this.toggleFullscreen}>
-              Use full browser window
-              <CloseIcon />
-            </GenericButton>
-          </ButtonWrapper>
-        </Bar>
-        <ReaderContainer fullscreen={fullscreen}>
+        <ReaderContainer>
           <ReactReader
-            url={localFile || DEMO_URL}
-            title={localName || DEMO_NAME}
+            url={localFile}
+            title={localName}
             location={location}
             locationChanged={this.onLocationChanged}
             getRendition={this.getRendition}
