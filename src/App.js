@@ -3,7 +3,9 @@ import { createGlobalStyle } from "styled-components";
 import FileReaderInput from "react-file-reader-input";
 import { ReactReader } from "./modules";
 import { Container, ReaderContainer, FontSizeButton } from "./Components";
+import SpeechSynth from './SpeechSynth'
 
+const synth = new SpeechSynth(global.speechSynthesis)
 const storage = global.localStorage || null;
 
 const GlobalStyle = createGlobalStyle`
@@ -59,6 +61,14 @@ class App extends Component {
     );
   };
 
+  wordSelected = event => {
+    synth.getVoices().then(voices => {
+      synth.speak(event.word, {
+        voice: voices.find(voice => voice.lang.replace("_", "-") === "nl-NL")
+      });
+    });
+  };
+
   onToggleFontSize = () => {
     const nextState = !this.state.largeText;
     this.setState(
@@ -109,6 +119,7 @@ class App extends Component {
             location={location}
             locationChanged={this.onLocationChanged}
             getRendition={this.getRendition}
+            wordSelected={this.wordSelected}
           />
           <FontSizeButton onClick={this.onToggleFontSize}>
             Toggle font-size

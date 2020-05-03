@@ -113,10 +113,14 @@ class EpubView extends Component {
   handleKeyPress = ({ key }) => {
     key && key === "ArrowRight" && this.nextPage();
     key && key === "ArrowLeft" && this.prevPage();
-  }
+  };
 
-  handleClick = ({ target }) => {
-    console.log(getSelectedWordForDocument(target.ownerDocument));
+  handleClick = event => {
+    const { wordSelected } = this.props;
+    const word = getSelectedWordForDocument(event.target.ownerDocument);
+    event.word = word;
+
+    wordSelected && word && wordSelected(event);
   };
 
   render() {
@@ -151,7 +155,8 @@ EpubView.propTypes = {
   styles: PropTypes.object,
   epubInitOptions: PropTypes.object,
   epubOptions: PropTypes.object,
-  getRendition: PropTypes.func
+  getRendition: PropTypes.func,
+  wordSelected: PropTypes.func
 };
 
 export default EpubView;
