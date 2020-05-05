@@ -52,7 +52,7 @@ class EpubView extends Component {
     return (
       !this.state.isLoaded ||
       nextProps.location !== this.props.location ||
-      nextProps.location !== this.props.location
+      nextProps.fontSize !== this.props.fontSize
     );
   }
 
@@ -62,6 +62,9 @@ class EpubView extends Component {
       this.location !== this.props.location
     ) {
       this.rendition.display(this.props.location);
+    }
+    if (prevProps.fontSize !== this.props.fontSize) {
+      this.rendition.themes.fontSize(this.props.fontSize);
     }
     if (prevProps.url !== this.props.url) {
       this.initBook();
@@ -83,6 +86,7 @@ class EpubView extends Component {
         ? location
         : toc[0].href
     );
+    this.rendition.themes.fontSize(this.props.fontSize);
 
     this.prevPage = () => {
       this.rendition.prev();
@@ -140,7 +144,8 @@ EpubView.defaultProps = {
   tocChanged: null,
   styles: defaultStyles,
   epubOptions: {},
-  epubInitOptions: {}
+  epubInitOptions: {},
+  fontSize: "100%"
 };
 
 EpubView.propTypes = {
@@ -156,7 +161,8 @@ EpubView.propTypes = {
   epubInitOptions: PropTypes.object,
   epubOptions: PropTypes.object,
   getRendition: PropTypes.func,
-  wordSelected: PropTypes.func
+  wordSelected: PropTypes.func,
+  fontSize: PropTypes.string
 };
 
 export default EpubView;
