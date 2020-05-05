@@ -1,39 +1,16 @@
 import React, { Component } from "react";
-import { createGlobalStyle } from "styled-components";
 import FileReaderInput from "react-file-reader-input";
 import { ReactReader } from "./modules";
-import { Container, ReaderContainer, FontSizeButton } from "./Components";
-import SpeechSynth from './SpeechSynth'
+import {
+  Container,
+  ReaderContainer,
+  FontSizeButton,
+  GlobalStyle
+} from "./Components";
+import SpeechSynth from "./SpeechSynth";
 
-const synth = new SpeechSynth(global.speechSynthesis)
+const synth = new SpeechSynth(global.speechSynthesis);
 const storage = global.localStorage || null;
-
-const GlobalStyle = createGlobalStyle`
-  * {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    margin: 0;
-    padding: 0;
-    color: inherit;
-    font-size: inherit;
-    font-weight: 300;
-    line-height: 1.4;
-    word-break: break-word;
-  }
-  html {
-    font-size: 62.5%;
-  }
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-size: 1.8rem;
-    background: #333;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    color: #fff;
-  }
-`;
 
 class App extends Component {
   constructor(props) {
@@ -42,7 +19,7 @@ class App extends Component {
       location:
         storage && storage.getItem("epub-location")
           ? storage.getItem("epub-location")
-          : 2,
+          : 0,
       localFile: props.localFile,
       localName: props.localName,
       largeText: false
@@ -121,9 +98,6 @@ class App extends Component {
             getRendition={this.getRendition}
             wordSelected={this.wordSelected}
           />
-          <FontSizeButton onClick={this.onToggleFontSize}>
-            Toggle font-size
-          </FontSizeButton>
         </ReaderContainer>
       </Container>
     );

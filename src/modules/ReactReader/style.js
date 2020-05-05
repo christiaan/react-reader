@@ -14,19 +14,11 @@ export default {
   containerExpanded: {
     transform: "translateX(256px)"
   },
-  titleArea: {
-    position: "absolute",
-    top: 20,
-    left: 50,
-    right: 50,
-    textAlign: "center",
-    color: "#999"
-  },
   reader: {
     position: "absolute",
-    top: 50,
+    top: 0,
     left: 50,
-    bottom: 20,
+    bottom: 0,
     right: 50
   },
   swipeWrapper: {

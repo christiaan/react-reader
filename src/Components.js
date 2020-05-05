@@ -1,5 +1,31 @@
-import styled from "styled-components";
-import breakpoint from "styled-components-breakpoint";
+import styled, { createGlobalStyle } from "styled-components";
+
+export const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: 300;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  html {
+    font-size: 62.5%;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-size: 1.8rem;
+    background: #333;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: #fff;
+  }
+`;
 
 export const Container = styled.div`
   position: relative;
@@ -15,7 +41,6 @@ export const ReaderContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  transition: all 0.6s ease;
 `;
 const Button = styled.button`
   font-family: inherit;

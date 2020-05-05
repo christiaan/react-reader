@@ -137,7 +137,6 @@ class ReactReader extends PureComponent {
           )}
         >
           {showToc && this.renderTocToggle()}
-          <div style={styles.titleArea}>{title}</div>
           <Swipeable
             onSwipedRight={this.prev}
             onSwipedLeft={this.next}
@@ -155,13 +154,13 @@ class ReactReader extends PureComponent {
             </div>
           </Swipeable>
           <button
-            style={Object.assign({}, styles.arrow, styles.prev)}
+            style={{ ...styles.arrow, ...styles.prev }}
             onClick={this.prev}
           >
             ‹
           </button>
           <button
-            style={Object.assign({}, styles.arrow, styles.next)}
+            style={{ ...styles.arrow, ...styles.next }}
             onClick={this.next}
           >
             ›
